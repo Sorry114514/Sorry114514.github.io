@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>我的资源下载站</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 720px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f5f7fb;
+      color: #222;
+    }
+    h1 { color: #2458a6; }
+    .item {
+      background: white;
+      padding: 18px;
+      margin: 14px 0;
+      border-radius: 12px;
+    }
+    a {
+      display: inline-block;
+      background: #2458a6;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+    small { color: #666; }
+  </style>
+</head>
+<body>
+  <h1>我的资源下载站</h1>
+  <p>欢迎来到我的个人资源网站。</p>
+
+  <div class="item">
+    <h3>📄 学习资料</h3>
+    <p>整理实用的学习文档与教程。</p>
+    <a href="https://wormhole.app/XnBYjP#ZACfwZoBy_52io1KTIjzOw"
+       target="_blank" rel="noopener">
+      查看资料
+    </a>
+  </div>
+
+  <div class="item">
+    <h3>💻 软件与工具</h3>
+    <p>分享实用工具和官方软件下载地址。</p>
+    <a href="https://www.google.com/"
+       target="_blank" rel="noopener">
+      获取工具
+    </a>
+  </div>
+
+  <div class="item">
+    <h3>📦 其他资源</h3>
+    <p>更多文件和个人整理的资源。</p>
+    <a href="https://drive.google.com/"
+       target="_blank" rel="noopener">
+      查看资源
+    </a>
+  </div>
+
+  <p><small>本站仅分享有权发布的资料和资源。</small></p>
+</body>
+</html>
