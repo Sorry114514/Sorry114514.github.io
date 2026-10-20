@@ -10,9 +10,28 @@
       max-width: 720px;
       margin: 40px auto;
       padding: 20px;
-      background: #f5f7fb;
       color: #222;
+
+      /* 背景图片：把下面链接换成你的图片地址 */
+      background-image: url('https://wormhole.app/M9Nmoy#VHPRN0LcdV-LcL3ZxzjC7g');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-color: #f5f7fb;
+      min-height: 100vh;
+      box-sizing: border-box;
     }
+
+    /* 内容半透明白底，避免图片干扰阅读 */
+    .container {
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(6px);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    }
+
     h1 { color: #2458a6; }
     .item {
       background: white;
@@ -29,39 +48,86 @@
       text-decoration: none;
     }
     small { color: #666; }
+
+    .thanks {
+      background: #eaf1ff;
+      border: 1px solid #cfe0ff;
+      border-radius: 12px;
+      padding: 18px;
+      margin: 24px 0 14px;
+    }
+    .thanks h3 {
+      margin: 0 0 6px;
+      color: #2458a6;
+    }
+    .thanks p {
+      margin: 0 0 12px;
+      color: #444;
+      font-size: 14px;
+    }
+    .names {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .names li {
+      background: white;
+      color: #2458a6;
+      font-weight: bold;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid #bcd3ff;
+      font-size: 15px;
+    }
   </style>
 </head>
 <body>
-  <h1>我的资源下载站</h1>
-  <p>欢迎来到我的个人资源网站。</p>
+  <div class="container">
+    <h1>我的资源下载站</h1>
+    <p>欢迎来到我的个人资源网站。</p>
 
-  <div class="item">
-    <h3>📄 学习资料</h3>
-    <p>整理实用的学习文档与教程。</p>
-    <a href="https://drive.google.com/"
-       target="_blank" rel="noopener">
-      查看资料
-    </a>
+    <div class="item">
+      <h3>📄 学习资料</h3>
+      <p>整理实用的学习文档与教程。</p>
+      <a href="https://wormhole.app/XnBYjP#ZACfwZoBy_52io1KTIjzOw"
+         target="_blank" rel="noopener">
+        查看资料
+      </a>
+    </div>
+
+    <div class="item">
+      <h3>💻 软件与工具</h3>
+      <p>分享实用工具和官方软件下载地址。</p>
+      <a href="https://wormhole.app/OLNnxa#T4GRZ0xp8osDwkq496AxPQ"
+         target="_blank" rel="noopener">
+        获取工具
+      </a>
+    </div>
+
+    <div class="item">
+      <h3>📦 其他资源</h3>
+      <p>更多文件和个人整理的资源。</p>
+      <a href="https://wormhole.app/l8omX4#y0GuTYa5LfrJ_19048sk8g"
+         target="_blank" rel="noopener">
+        查看资源
+      </a>
+    </div>
+
+    <div class="thanks">
+      <h3>🙏 特别感谢</h3>
+      <p>感谢以下朋友对本站的支持与贡献：</p>
+      <ul class="names">
+        <li>吴正航</li>
+        <li>陈乐安</li>
+        <li>罗光浩</li>
+        <li>陈耀</li>
+      </ul>
+    </div>
+
+    <p><small>本站仅分享有权发布的资料和资源。</small></p>
   </div>
-
-  <div class="item">
-    <h3>💻 软件与工具</h3>
-    <p>分享实用工具和官方软件下载地址。</p>
-    <a href="https://www.google.com/"
-       target="_blank" rel="noopener">
-      获取工具
-    </a>
-  </div>
-
-  <div class="item">
-    <h3>📦 其他资源</h3>
-    <p>更多文件和个人整理的资源。</p>
-    <a href="https://drive.google.com/"
-       target="_blank" rel="noopener">
-      查看资源
-    </a>
-  </div>
-
-  <p><small>本站仅分享有权发布的资料和资源。</small></p>
 </body>
 </html>
