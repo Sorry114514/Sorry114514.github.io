@@ -6,36 +6,32 @@
 <title>张景全防</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;height:100%;background:#000;color:#0f0;font-family:ui-monospace,Menlo,Consolas,monospace;overflow:hidden}
+html,body{margin:0;height:100%;background:#000;color:#0f0;font-family:monospace;overflow:hidden}
 #matrix{position:fixed;inset:0;z-index:0;pointer-events:none}
 
-/* 防溢出核心布局 */
-.app{position:fixed;inset:0;z-index:1;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top) + 14px) 16px calc(env(safe-area-inset-bottom) + 14px);gap:10px}
+.app{position:fixed;inset:0;z-index:1;display:flex;flex-direction:column;padding:20px;gap:10px}
 h1{font-size:18px;margin:0;letter-spacing:2px;color:#0f0;text-shadow:0 0 8px #0f0;flex-shrink:0}
 .sub{font-size:11px;color:#8f8;opacity:.8;flex-shrink:0}
-#log{flex:1;min-height:0;overflow:auto;border:1px solid rgba(0,255,0,.35);padding:10px;background:rgba(0,10,0,.55);font-size:12px;line-height:1.55;border-radius:8px;white-space:pre-wrap;word-break:break-all;-webkit-overflow-scrolling:touch}
+#log{flex:1;min-height:0;overflow:auto;border:1px solid rgba(0,255,0,.35);padding:10px;background:rgba(0,10,0,.55);font-size:12px;line-height:1.55;border-radius:8px;white-space:pre-wrap;word-break:break-all}
 .bar{height:14px;border:1px solid #0f0;border-radius:99px;overflow:hidden;background:#001100;flex-shrink:0}
-#fill{height:100%;width:0;background:linear-gradient(90deg,#063,#0f0);transition:width .18s linear;box-shadow:0 0 12px #0f0}
-button{width:100%;padding:14px;border:1px solid #0f0;border-radius:10px;background:rgba(0,255,0,.08);color:#0f0;font:inherit;font-size:16px;font-weight:700;letter-spacing:2px;flex-shrink:0;touch-action:manipulation}
+#fill{height:100%;width:0;background:linear-gradient(90deg,#063,#0f0);transition:width .18s linear}
+button{width:100%;padding:14px;border:1px solid #0f0;border-radius:10px;background:rgba(0,255,0,.08);color:#0f0;font:inherit;font-size:16px;font-weight:700;letter-spacing:2px;flex-shrink:0;cursor:pointer}
 button:disabled{opacity:.5}
 
-/* 伪装系统权限弹窗 */
-.sys-modal{position:fixed;inset:0;z-index:10;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.8);padding:20px;backdrop-filter:blur(2px)}
+.sys-modal{position:fixed;inset:0;z-index:10;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.8);padding:20px}
 .sys-modal.show{display:flex}
 .sys-card{background:#fff;color:#000;border-radius:14px;padding:24px 20px;text-align:left;max-width:320px;width:100%;box-shadow:0 10px 30px rgba(0,0,0,.5);font-family:sans-serif}
-.sys-card h3{margin:0 0 10px;font-size:18px;color:#000;font-weight:bold}
+.sys-card h3{margin:0 0 10px;font-size:18px;color:#000}
 .sys-card p{margin:0 0 24px;font-size:14px;color:#555;line-height:1.5}
 .sys-btns{display:flex;justify-content:flex-end;gap:12px}
-.sys-btns button{width:auto;padding:8px 16px;font-size:14px;font-family:sans-serif;border:none;background:none;color:#007aff;font-weight:bold;flex-shrink:1}
+.sys-btns button{width:auto;padding:8px 16px;font-size:14px;font-family:sans-serif;border:none;background:none;color:#007aff;font-weight:bold}
 .sys-btns button.deny{color:#ff3b30}
 
-/* 结果弹窗 */
 .modal{position:fixed;inset:0;z-index:5;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.88);padding:24px}
 .modal.show{display:flex}
 .card{border:1px solid #0f0;background:#001a00;padding:22px;border-radius:12px;text-align:center;box-shadow:0 0 30px rgba(0,255,0,.35);max-width:360px;width:100%}
 .card h2{margin:0 0 8px;font-size:22px;color:#0f0;text-shadow:0 0 10px #0f0}
 .card p{margin:0 0 18px;font-size:14px;color:#9f9;line-height:1.6}
-.card button{font-size:14px;padding:12px}
 </style>
 </head>
 <body>
@@ -46,65 +42,88 @@ button:disabled{opacity:.5}
   <div class="sub">SYSTEM BREACH SIMULATOR · 访问真实文件</div>
   <div id="log">[READY] 点击下方按钮开始...</div>
   <div class="bar"><div id="fill"></div></div>
-  <button id="start">开始入侵</button>
+  <!-- 直接绑定 onclick，最稳定 -->
+  <button id="start" onclick="showPermission()">开始入侵</button>
 </div>
 
-<!-- 伪装的系统权限弹窗 (点击开始时出现) -->
 <div class="sys-modal" id="sysModal">
   <div class="sys-card">
     <h3>权限请求</h3>
     <p>“张景全防”想要访问您的设备上的所有文件，包括照片、媒体和文档。</p>
     <div class="sys-btns">
-      <button class="deny" id="btnDeny">拒绝</button>
-      <button id="btnAllow">允许</button>
+      <button class="deny" onclick="denyPermission()">拒绝</button>
+      <button onclick="allowPermission()">允许</button>
     </div>
   </div>
 </div>
 
-<!-- 最终的入侵成功弹窗 -->
 <div class="modal" id="modal">
   <div class="card">
     <h2>ACCESS GRANTED</h2>
     <p>入侵完成<br>无正好你十老风了吧</p>
-    <button id="close">关闭</button>
+    <button onclick="closeModal()">关闭</button>
   </div>
 </div>
 
 <script>
-/* ============ 代码雨：ZJQNB666 ============ */
-const canvas=document.getElementById('matrix'),ctx=canvas.getContext('2d');
-let drops=[],fontSize=14,columns=0;
-function resize(){
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
-  canvas.width = innerWidth * dpr;
-  canvas.height = innerHeight * dpr;
-  canvas.style.width = innerWidth + 'px';
-  canvas.style.height = innerHeight + 'px';
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  columns = Math.ceil(innerWidth / fontSize);
-  drops = Array.from({length: columns}, () => Math.random() * -100);
-}
-addEventListener('resize',resize);resize();
-
-const chars='ZJQNB666';
-function rain(){
-  ctx.fillStyle='rgba(0,0,0,0.08)';
-  ctx.fillRect(0,0,innerWidth,innerHeight);
-  ctx.font=fontSize+'px monospace';
-  for(let i=0;i<columns;i++){
-    const text=chars[Math.floor(Math.random()*chars.length)];
-    ctx.fillStyle=Math.random()>0.95?'#d8ffe8':'rgba(0,255,102,0.85)';
-    ctx.fillText(text,i*fontSize,drops[i]*fontSize);
-    if(drops[i]*fontSize>innerHeight&&Math.random()>0.975)drops[i]=0;
-    drops[i]++;
+// 全局报错捕获，直接在屏幕上显示原因
+window.onerror = function(msg) {
+  var logEl = document.getElementById('log');
+  if (logEl) {
+    logEl.innerHTML += '<div style="color:red">[ERROR] ' + msg + '</div>';
   }
-}
-setInterval(rain,50);
+  return false;
+};
 
-/* ============ 逻辑控制 ============ */
-const logEl=document.getElementById('log'),
-      fill=document.getElementById('fill'),
-      startBtn=document.getElementById('start'),
-      modal=document.getElementById('modal'),
-      closeBtn=document.getElementById('close'),
-      sysModal=document.getElementById('s
+var logEl = document.getElementById('log');
+var fill = document.getElementById('fill');
+var startBtn = document.getElementById('start');
+var modal = document.getElementById('modal');
+var sysModal = document.getElementById('sysModal');
+var running = false;
+var timerId = null;
+
+function addLog(text, color) {
+  var line = document.createElement('div');
+  line.textContent = text;
+  line.style.color = color || '#0f0';
+  logEl.appendChild(line);
+  logEl.scrollTop = logEl.scrollHeight;
+}
+
+function rand(a) {
+  return a[Math.floor(Math.random() * a.length)];
+}
+
+function showPermission() {
+  if (running) return;
+  sysModal.classList.add('show');
+}
+
+function denyPermission() {
+  sysModal.classList.remove('show');
+  alert('您拒绝了权限，无法进行入侵！');
+}
+
+function allowPermission() {
+  sysModal.classList.remove('show');
+  startHack();
+}
+
+function closeModal() {
+  modal.classList.remove('show');
+}
+
+function startHack() {
+  running = true;
+  modal.classList.remove('show');
+  logEl.innerHTML = '';
+  fill.style.width = '0%';
+  startBtn.disabled = true;
+  startBtn.textContent = '进行中...';
+  
+  addLog('[INIT] 权限已获取，正在建立连接...', '#0f0');
+  addLog('[WARN] 目标锁定，正在读取真实文件', '#ff0');
+  
+  var fakeFiles = ['/storage/emulated/0/DCIM/photo_2024_11.jpg', '/storage/emulated/0/Download/notes.txt', '/storage/emulated/0/WhatsApp/Media/audio_001.ogg', '/data/app/com.demo/cache/token.bin', '/sdcard/Movies/demo.mp4'];
+  var fakeLogs = ['[OK] 握手完成', '[INFO] 端口 443 已连接', '[
