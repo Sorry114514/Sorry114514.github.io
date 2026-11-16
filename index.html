@@ -1,141 +1,93 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>我的资源下载站</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 720px;
-      margin: 40px auto;
-      padding: 20px;
-      color: #222;
-
-      /* 背景图片：把下面链接换成你的图片地址 */
-      background-image: url('https://cdn.imageurlgenerator.com/uploads/b7a9fe79-5a79-4336-97e8-8c787fc68130.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      background-color: #f5f7fb;
-      min-height: 100vh;
-      box-sizing: border-box;
-    }
-
-    /* 内容半透明白底，避免图片干扰阅读 */
-    .container {
-      background: rgba(255, 255, 255, 0.86);
-      backdrop-filter: blur(6px);
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-    }
-
-    h1 { color: #2458a6; }
-    .item {
-      background: white;
-      padding: 18px;
-      margin: 14px 0;
-      border-radius: 12px;
-    }
-    a {
-      display: inline-block;
-      background: #2458a6;
-      color: white;
-      padding: 10px 16px;
-      border-radius: 8px;
-      text-decoration: none;
-    }
-    small { color: #666; }
-
-    .thanks, .friends {
-      background: #eaf1ff;
-      border: 1px solid #cfe0ff;
-      border-radius: 12px;
-      padding: 18px;
-      margin: 24px 0 14px;
-    }
-    .thanks h3, .friends h3 {
-      margin: 0 0 6px;
-      color: #2458a6;
-    }
-    .thanks p, .friends p {
-      margin: 0 0 12px;
-      color: #444;
-      font-size: 14px;
-    }
-    .names {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .names li {
-      background: white;
-      color: #2458a6;
-      font-weight: bold;
-      padding: 8px 16px;
-      border-radius: 999px;
-      border: 1px solid #bcd3ff;
-      font-size: 15px;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>入侵演示</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#000;color:#0f0;font-family:ui-monospace,Menlo,Consolas,monospace;overflow:hidden}
+#matrix{position:fixed;inset:0;z-index:0}
+.app{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;padding:16px;gap:10px}
+h1{font-size:18px;margin:0;letter-spacing:2px;color:#0f0;text-shadow:0 0 8px #0f0}
+.sub{font-size:11px;color:#8f8;opacity:.8}
+#log{flex:1;overflow:auto;border:1px solid rgba(0,255,0,.35);padding:10px;background:rgba(0,10,0,.55);font-size:12px;line-height:1.55;border-radius:8px;white-space:pre-wrap;word-break:break-all}
+.bar{height:14px;border:1px solid #0f0;border-radius:99px;overflow:hidden;background:#001100}
+#fill{height:100%;width:0;background:linear-gradient(90deg,#063,#0f0);transition:width .18s linear;box-shadow:0 0 12px #0f0}
+button{width:100%;padding:14px;border:1px solid #0f0;border-radius:10px;background:rgba(0,255,0,.08);color:#0f0;font:inherit;font-size:16px;font-weight:700;letter-spacing:2px}
+button:disabled{opacity:.5}
+.modal{position:fixed;inset:0;z-index:2;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.88);padding:24px}
+.modal.show{display:flex}
+.card{border:1px solid #0f0;background:#001a00;padding:22px;border-radius:12px;text-align:center;box-shadow:0 0 30px rgba(0,255,0,.35);max-width:360px;width:100%}
+.card h2{margin:0 0 8px;font-size:22px;color:#0f0;text-shadow:0 0 10px #0f0}
+.card p{margin:0 0 18px;font-size:12px;color:#9f9}
+.card button{font-size:14px;padding:12px}
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>我的资源下载站</h1>
-    <p>你的豪度太低，永远无法理解我现在的状态，我是一个时代孕育出来的唯一嘉豪，无论是拟豪态 或是逍遥豪，亦或是量子叠加豪，还是自在极意豪，你们只能算是异类豪罢了。我的豪度存在于过去 现在 未来 。当世人呼唤嘉豪的那一刻，豪将显化于世，终结嘉豪时代</p>
-
-    <div class="item">
-      <h3>📄 JM3</h3>
-      <p>没有广告版本大小25M</p>
-      <a href="https://Sorry114514.github.io/JMComic3_2.0.30.z01" target="_blank" rel="noopener">
-        查看资料
-      </a>
-    </div>
-
-    <div class="item">
-      <h3>💻 软件与工具</h3>
-      <p>分享实用工具和官方软件下载地址。</p>
-      <a href="">
-        获取工具
-      </a>
-    </div>
-
-    <div class="item">
-      <h3>📦 其他资源</h3>
-      <p>更多文件和个人整理的资源。</p>
-      <a href="https://wormhole.app/l8omX4#y0GuTYa5LfrJ_19048sk8g"
-         target="_blank" rel="noopener">
-        查看资源
-      </a>
-    </div>
-
-    <div class="thanks">
-      <h3>🙏 特别感谢</h3>
-      <p>感谢以下朋友对本站的支持与贡献：</p>
-      <ul class="names">
-        <li>旧梦一场</li>
-        <li>小陈</li>
-        <li>龙城小橘子</li>
-        <li>X</li>
-      </ul>
-    </div>
-
-    <!-- 友情链接部分 -->
-    <div class="friends">
-      <h3>🔗 友情链接</h3>
-      <ul class="names">
-        <!-- 在这里把链接和名字换成你朋友的 -->
-        <li><a href="WXWb666.github.io" target="_blank" rel="noopener" style="background: transparent; color: #2458a6; padding: 0;">WXWb666</a></li>
-      </ul>
-    </div>
-
-    <p><small>本站仅分享有权发布的资料和资源
-有需要请联系ok3967496615@outlook.com</small></p>
+<canvas id="matrix"></canvas>
+<div class="app">
+  <h1>SYSTEM BREACH SIMULATOR</h1>
+  <div class="sub">访问真实文件 · 发起真实攻击</div>
+  <div id="log">[READY] 点击下方按钮开始...</div>
+  <div class="bar"><div id="fill"></div></div>
+  <button id="start">开始入侵</button>
+</div>
+<div class="modal" id="modal">
+  <div class="card">
+    <h2>ACCESS GRANTED</h2>
+    <p>入侵完成<br>张景全防</p>
+    <button id="close">关闭</button>
   </div>
+</div>
+<script>
+const canvas=document.getElementById('matrix'),ctx=canvas.getContext('2d');
+let drops=[],fontSize=14,columns=0;
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight;columns=Math.floor(canvas.width/fontSize);drops=Array(columns).fill(0).map(()=>Math.random()*-100);}
+addEventListener('resize',resize);resize();
+const chars='01ABCDEF<>/\\[]{}#$%&*+-=';
+function rain(){
+  ctx.fillStyle='rgba(0,0,0,0.08)';ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle='rgba(0,255,0,0.75)';ctx.font=fontSize+'px monospace';
+  for(let i=0;i<drops.length;i++){
+    const text=chars[Math.floor(Math.random()*chars.length)];
+    ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+    if(drops[i]*fontSize>canvas.height&&Math.random()>0.975)drops[i]=0;
+    drops[i]++;
+  }
+}
+setInterval(rain,50);
+const logEl=document.getElementById('log'),fill=document.getElementById('fill'),startBtn=document.getElementById('start'),modal=document.getElementById('modal'),closeBtn=document.getElementById('close');
+let running=false;
+const fakeFiles=['/storage/emulated/0/DCIM/photo_2024_11.jpg','/storage/emulated/0/Download/notes.txt','/storage/emulated/0/WhatsApp/Media/audio_001.ogg','/data/app/com.demo/cache/token.bin','/sdcard/Movies/demo.mp4','/storage/emulated/0/Documents/passwords.txt','/data/local/tmp/payload.dat'];
+const fakeLogs=['[OK] 握手完成','[INFO] 端口 443 已连接','[WARN] 检测到防火墙','[INFO] 正在绕过沙箱','[OK] 数据包已封装','[INFO] 权限提升中...','[OK] 凭据校验通过'];
+function rand(a){return a[Math.floor(Math.random()*a.length)]}
+function addLog(text,color='#0f0'){const line=document.createElement('div');line.textContent=text;line.style.color=color;logEl.appendChild(line);logEl.scrollTop=logEl.scrollHeight;}
+function start(){
+  if(running)return;running=true;modal.classList.remove('show');logEl.innerHTML='';fill.style.width='0%';startBtn.disabled=true;startBtn.textContent='进行中...';
+  addLog('[INIT] 正在建立连接...','#0f0');
+  addLog('[WARN] 本程序为纯攻击模，读取真实文件','#ff0');
+  let progress=0;
+  const timer=setInterval(()=>{
+    progress=Math.min(100,progress+Math.random()*7+2);
+    fill.style.width=progress+'%';
+    if(Math.random()<0.75)addLog(`[SCAN] ${rand(fakeFiles)} ... ${Math.random()<0.5?'OK':'ACCESS'}`,'#0f0');
+    if(Math.random()<0.35)addLog(rand(fakeLogs),'#0af');
+    if(progress>=100){
+      clearInterval(timer);
+      addLog('[DONE] 扫描完成','#ff0');
+      setTimeout(()=>{
+        addLog('[SEND] 正在发送攻击载荷...','#f80');
+        setTimeout(()=>{
+          modal.classList.add('show');
+          startBtn.disabled=false;startBtn.textContent='重新';running=false;
+        },1200);
+      },500);
+    }
+  },180);
+}
+startBtn.addEventListener('click',start);
+closeBtn.addEventListener('click',()=>modal.classList.remove('show'));
+</script>
 </body>
 </html>
