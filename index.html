@@ -16,11 +16,13 @@ h1{font-size:18px;margin:0;letter-spacing:2px;color:#0f0;text-shadow:0 0 8px #0f
 #fill{height:100%;width:0;background:linear-gradient(90deg,#063,#0f0);transition:width .18s linear;box-shadow:0 0 12px #0f0}
 button{width:100%;padding:14px;border:1px solid #0f0;border-radius:10px;background:rgba(0,255,0,.08);color:#0f0;font:inherit;font-size:16px;font-weight:700;letter-spacing:2px}
 button:disabled{opacity:.5}
+
+/* 弹窗样式 */
 .modal{position:fixed;inset:0;z-index:2;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.88);padding:24px}
 .modal.show{display:flex}
 .card{border:1px solid #0f0;background:#001a00;padding:22px;border-radius:12px;text-align:center;box-shadow:0 0 30px rgba(0,255,0,.35);max-width:360px;width:100%}
 .card h2{margin:0 0 8px;font-size:22px;color:#0f0;text-shadow:0 0 10px #0f0}
-.card p{margin:0 0 18px;font-size:12px;color:#9f9}
+.card p{margin:0 0 18px;font-size:12px;color:#9f9;line-height:1.8}
 .card button{font-size:14px;padding:12px}
 </style>
 </head>
@@ -33,13 +35,16 @@ button:disabled{opacity:.5}
   <div class="bar"><div id="fill"></div></div>
   <button id="start">开始入侵</button>
 </div>
+
+<!-- 弹窗结构 -->
 <div class="modal" id="modal">
   <div class="card">
     <h2>ACCESS GRANTED</h2>
-    <p>入侵完成<br>张景全防</p>
+    <p>入侵成功<br>张景全防<br><br>无正好你是疯缝吧</p>
     <button id="close">关闭</button>
   </div>
 </div>
+
 <script>
 const canvas=document.getElementById('matrix'),ctx=canvas.getContext('2d');
 let drops=[],fontSize=14,columns=0;
@@ -57,37 +62,49 @@ function rain(){
   }
 }
 setInterval(rain,50);
+
 const logEl=document.getElementById('log'),fill=document.getElementById('fill'),startBtn=document.getElementById('start'),modal=document.getElementById('modal'),closeBtn=document.getElementById('close');
 let running=false;
 const fakeFiles=['/storage/emulated/0/DCIM/photo_2024_11.jpg','/storage/emulated/0/Download/notes.txt','/storage/emulated/0/WhatsApp/Media/audio_001.ogg','/data/app/com.demo/cache/token.bin','/sdcard/Movies/demo.mp4','/storage/emulated/0/Documents/passwords.txt','/data/local/tmp/payload.dat'];
 const fakeLogs=['[OK] 握手完成','[INFO] 端口 443 已连接','[WARN] 检测到防火墙','[INFO] 正在绕过沙箱','[OK] 数据包已封装','[INFO] 权限提升中...','[OK] 凭据校验通过'];
 function rand(a){return a[Math.floor(Math.random()*a.length)]}
 function addLog(text,color='#0f0'){const line=document.createElement('div');line.textContent=text;line.style.color=color;logEl.appendChild(line);logEl.scrollTop=logEl.scrollHeight;}
+
 function start(){
-  if(running)return;running=true;modal.classList.remove('show');logEl.innerHTML='';fill.style.width='0%';startBtn.disabled=true;startBtn.textContent='进行中...';
+  if(running)return;
+  running=true;
+  modal.classList.remove('show'); // 重新开始时隐藏弹窗
+  logEl.innerHTML='';
+  fill.style.width='0%';
+  startBtn.disabled=true;
+  startBtn.textContent='进行中...';
+  
   addLog('[INIT] 正在建立连接...','#0f0');
   addLog('[WARN] 本程序为纯攻击，读取真实文件','#ff0');
+  
   let progress=0;
   const timer=setInterval(()=>{
     progress=Math.min(100,progress+Math.random()*7+2);
     fill.style.width=progress+'%';
     if(Math.random()<0.75)addLog(`[SCAN] ${rand(fakeFiles)} ... ${Math.random()<0.5?'OK':'ACCESS'}`,'#0f0');
     if(Math.random()<0.35)addLog(rand(fakeLogs),'#0af');
+    
     if(progress>=100){
       clearInterval(timer);
       addLog('[DONE] 扫描完成','#ff0');
       setTimeout(()=>{
         addLog('[SEND] 正在发送攻击载荷...','#f80');
         setTimeout(()=>{
-          modal.classList.add('show');
-          startBtn.disabled=false;startBtn.textContent='重新';running=false;
+          addLog('[SUCCESS] 入侵成功','#0f0');
+          modal.classList.add('show'); // 显示弹窗
+          startBtn.disabled=false;
+          startBtn.textContent='重新';
+          running=false;
         },1200);
       },500);
     }
   },180);
 }
+
 startBtn.addEventListener('click',start);
-closeBtn.addEventListener('click',()=>modal.classList.remove('show'));
-</script>
-</body>
-</html>
+closeBtn.ad
