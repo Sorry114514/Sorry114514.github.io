@@ -1,93 +1,158 @@
 <!doctype html>
-<html lang="zh-CN">
+<html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>顶级黑客入侵</title>
+<title>入侵</title>
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;height:100%;background:#000;color:#0f0;font-family:ui-monospace,Menlo,Consolas,monospace;overflow:hidden}
-#matrix{position:fixed;inset:0;z-index:0}
-.app{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;padding:16px;gap:10px}
-h1{font-size:18px;margin:0;letter-spacing:2px;color:#0f0;text-shadow:0 0 8px #0f0}
-.sub{font-size:11px;color:#8f8;opacity:.8}
-#log{flex:1;overflow:auto;border:1px solid rgba(0,255,0,.35);padding:10px;background:rgba(0,10,0,.55);font-size:12px;line-height:1.55;border-radius:8px;white-space:pre-wrap;word-break:break-all}
-.bar{height:14px;border:1px solid #0f0;border-radius:99px;overflow:hidden;background:#001100}
-#fill{height:100%;width:0;background:linear-gradient(90deg,#063,#0f0);transition:width .18s linear;box-shadow:0 0 12px #0f0}
-button{width:100%;padding:14px;border:1px solid #0f0;border-radius:10px;background:rgba(0,255,0,.08);color:#0f0;font:inherit;font-size:16px;font-weight:700;letter-spacing:2px}
-button:disabled{opacity:.5}
-.modal{position:fixed;inset:0;z-index:2;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.88);padding:24px}
-.modal.show{display:flex}
-.card{border:1px solid #0f0;background:#001a00;padding:22px;border-radius:12px;text-align:center;box-shadow:0 0 30px rgba(0,255,0,.35);max-width:360px;width:100%}
-.card h2{margin:0 0 8px;font-size:22px;color:#0f0;text-shadow:0 0 10px #0f0}
-.card p{margin:0 0 18px;font-size:12px;color:#9f9}
-.card button{font-size:14px;padding:12px}
+body {
+    margin: 0; padding: 12px; background: #000; color: #0f0;
+    font-family: monospace; height: 100vh; box-sizing: border-box;
+    display: flex; flex-direction: column;
+}
+#log {
+    flex: 1; border: 1px solid #0f0; padding: 10px; margin-bottom: 10px;
+    background: #001100; overflow-y: auto; font-size: 12px; line-height: 1.4;
+    word-break: break-all;
+}
+.bar { height: 18px; border: 1px solid #0f0; margin-bottom: 10px; background: #002200; }
+#fill { height: 100%; width: 0; background: #0f0; transition: width 0.1s linear; }
+button {
+    width: 100%; padding: 14px; background: #0f0; color: #000;
+    font-weight: bold; font-size: 16px; border: none; cursor: pointer;
+}
+button:active { background: #0a0; }
+.modal {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center;
+}
+.card {
+    border: 2px solid #f00; padding: 20px; text-align: center; background: #000;
+}
+.card h2 { color: #f00; margin: 0 0 10px; }
+.card p { color: #f88; margin: 0 0 20px; }
+.card button { background: #f00; color: #fff; border: none; padding: 10px; }
 </style>
 </head>
 <body>
-<canvas id="matrix"></canvas>
-<div class="app">
-  <h1>SYSTEM BREACH SIMULATOR</h1>
-  <div class="sub">访问真实文件 · 发起真实攻击</div>
-  <div id="log">[READY] 点击下方按钮开始...</div>
-  <div class="bar"><div id="fill"></div></div>
-  <button id="start">开始入侵</button>
+
+<div id="log">[READY] 等待点击...</div>
+<div class="bar"><div id="fill"></div></div>
+<button id="start">开始入侵</button>
+
+<div id="modal" class="modal">
+    <div class="card">
+        <h2>ACCESS GRANTED</h2>
+        <p>吴正航你十老风了吧</p>
+        <button id="close">关闭</button>
+    </div>
 </div>
-<div class="modal" id="modal">
-  <div class="card">
-    <h2>ACCESS GRANTED</h2>
-    <p>入侵完成<br>吴正航你十老风了吧</p>
-    <button id="close">关闭</button>
-  </div>
-</div>
+
 <script>
-const canvas=document.getElementById('matrix'),ctx=canvas.getContext('2d');
-let drops=[],fontSize=14,columns=0;
-function resize(){canvas.width=innerWidth;canvas.height=innerHeight;columns=Math.floor(canvas.width/fontSize);drops=Array(columns).fill(0).map(()=>Math.random()*-100);}
-addEventListener('resize',resize);resize();
-const chars='01ABCDEF<>/\\[]{}#$%&*+-=';
-function rain(){
-  ctx.fillStyle='rgba(0,0,0,0.08)';ctx.fillRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle='rgba(0,255,0,0.75)';ctx.font=fontSize+'px monospace';
-  for(let i=0;i<drops.length;i++){
-    const text=chars[Math.floor(Math.random()*chars.length)];
-    ctx.fillText(text,i*fontSize,drops[i]*fontSize);
-    if(drops[i]*fontSize>canvas.height&&Math.random()>0.975)drops[i]=0;
-    drops[i]++;
+// 错误捕获：直接打印在屏幕上，不弹窗，防止卡死
+window.onerror = function(m) {
+    var logEl = document.getElementById('log');
+    if(logEl) logEl.innerHTML = '<div style="color:red">[ERROR] 运行错误: ' + m + '</div>' + logEl.innerHTML;
+    return true;
+};
+
+var isRunning = false;
+
+var files = [
+  '/system/etc/passwd', '/sdcard/DCIM/photo.jpg', '/data/cache/token.bin',
+  '/root/.ssh/id_rsa', '/data/local/tmp/payload.dat',
+  '/data/data/com.tencent.mm/MicroMsg/EnMicroMsg.db',
+  '/data/misc/wifi/WifiConfigStore.xml', '/system/bin/su',
+  '/var/log/auth.log', '/etc/shadow', '/data/system/accounts.db',
+  '/storage/emulated/0/Download/bank.pdf', '/proc/kcore'
+];
+
+var statuses = ['OK', 'ACCESS', 'DENIED', 'ENCRYPTED', 'BYPASS', 'LOCKED'];
+
+var logs = [
+  '[OK] 握手完成', '[WARN] 检测到防火墙', '[INFO] 端口443连接',
+  '[ERR] 连接超时重试', '[OK] 载荷注入成功', '[INFO] 正在提权...',
+  '[OK] 获取Root权限', '[WARN] 触发反病毒引擎', '[INFO] 加密隧道已建立',
+  '[OK] 截获管理员密码', '[INFO] 正在抓取屏幕画面', '[OK] 屏幕截取成功',
+  '[INFO] 开启麦克风监听...', '[OK] 音频流已传输', '[INFO] 正在抹除痕迹...'
+];
+
+function getRand(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function addLog(text, isRed) {
+  var logEl = document.getElementById('log');
+  var div = document.createElement('div');
+  div.textContent = text; // 使用 textContent 性能更好且防XSS
+  div.style.color = isRed ? '#f00' : '#0f0';
+  logEl.appendChild(div);
+  logEl.scrollTop = logEl.scrollHeight; 
+  
+  // 性能优化：使用 while 确保清理多余节点
+  while (logEl.children.length > 120) {
+    logEl.removeChild(logEl.firstChild);
   }
 }
-setInterval(rain,50);
-const logEl=document.getElementById('log'),fill=document.getElementById('fill'),startBtn=document.getElementById('start'),modal=document.getElementById('modal'),closeBtn=document.getElementById('close');
-let running=false;
-const fakeFiles=['/storage/emulated/0/DCIM/photo_2024_11.jpg','/storage/emulated/0/Download/notes.txt','/storage/emulated/0/WhatsApp/Media/audio_001.ogg','/data/app/com.demo/cache/token.bin','/sdcard/Movies/demo.mp4','/storage/emulated/0/Documents/passwords.txt','/data/local/tmp/payload.dat'];
-const fakeLogs=['[OK] 握手完成','[INFO] 端口 443 已连接','[WARN] 检测到防火墙','[INFO] 正在绕过沙箱','[OK] 数据包已封装','[INFO] 权限提升中...','[OK] 凭据校验通过'];
-function rand(a){return a[Math.floor(Math.random()*a.length)]}
-function addLog(text,color='#0f0'){const line=document.createElement('div');line.textContent=text;line.style.color=color;logEl.appendChild(line);logEl.scrollTop=logEl.scrollHeight;}
-function start(){
-  if(running)return;running=true;modal.classList.remove('show');logEl.innerHTML='';fill.style.width='0%';startBtn.disabled=true;startBtn.textContent='进行中...';
-  addLog('[INIT] 正在建立连接...','#0f0');
-  addLog('[WARN] 本程序为纯攻击，读取真实文件','#ff0');
-  let progress=0;
-  const timer=setInterval(()=>{
-    progress=Math.min(100,progress+Math.random()*7+2);
-    fill.style.width=progress+'%';
-    if(Math.random()<0.75)addLog(`[SCAN] ${rand(fakeFiles)} ... ${Math.random()<0.5?'OK':'ACCESS'}`,'#0f0');
-    if(Math.random()<0.35)addLog(rand(fakeLogs),'#0af');
-    if(progress>=100){
-      clearInterval(timer);
-      addLog('[DONE] 扫描完成','#ff0');
-      setTimeout(()=>{
-        addLog('[SEND] 正在发送攻击载荷...','#f80');
-        setTimeout(()=>{
-          modal.classList.add('show');
-          startBtn.disabled=false;startBtn.textContent='重新';running=false;
-        },1200);
-      },500);
-    }
-  },180);
+
+function getHash() {
+  var chars = '0123456789ABCDEF';
+  var res = '0x';
+  for(var i=0; i<4; i++) res += chars[Math.floor(Math.random()*16)];
+  return res;
 }
-startBtn.addEventListener('click',start);
-closeBtn.addEventListener('click',()=>modal.classList.remove('show'));
+
+function doHack() {
+  if (isRunning) return;
+  isRunning = true;
+
+  document.getElementById('modal').style.display = 'none';
+  document.getElementById('log').innerHTML = '';
+  document.getElementById('fill').style.width = '0%';
+  
+  var btn = document.getElementById('start');
+  btn.disabled = true;
+  btn.innerText = '正在执行...';
+
+  var progress = 0;
+  
+  // 间隔调回安全的 80 毫秒，防止手机浏览器崩溃
+  var timer = setInterval(function() {
+    progress += Math.random() * 3 + 1.5; 
+    if (progress > 100) progress = 100;
+    
+    document.getElementById('fill').style.width = progress + '%';
+
+    // 必出扫描日志
+    var status = getRand(statuses);
+    var isRed = (status === 'DENIED' || status === 'LOCKED');
+    addLog('[SCAN] ' + getRand(files) + ' ... ' + status + ' [' + getHash() + ']', isRed);
+
+    // 60%概率出系统日志
+    if (Math.random() < 0.6) {
+      var logText = getRand(logs);
+      var isErr = (logText.indexOf('ERR') !== -1 || logText.indexOf('WARN') !== -1);
+      addLog(logText, isErr);
+    }
+
+    if (progress >= 100) {
+      clearInterval(timer);
+      addLog('[DONE] 数据窃取完毕', true);
+      
+      setTimeout(function() {
+        document.getElementById('modal').style.display = 'flex';
+        btn.disabled = false;
+        btn.innerText = '重新入侵';
+        isRunning = false;
+      }, 800);
+    }
+  }, 80); 
+}
+
+document.getElementById('start').onclick = doHack;
+document.getElementById('close').onclick = function() {
+    document.getElementById('modal').style.display = 'none';
+};
 </script>
 </body>
 </html>
