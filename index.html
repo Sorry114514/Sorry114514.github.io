@@ -129,7 +129,7 @@ function doHack() {
     addLog('[SCAN] ' + getRand(files) + ' ... ' + status + ' [' + getHash() + ']', isRed);
 
     // 60%概率出系统日志
-    if (Math.random() < 0.6) {
+    if (Math.random() < 1) {
       var logText = getRand(logs);
       var isErr = (logText.indexOf('ERR') !== -1 || logText.indexOf('WARN') !== -1);
       addLog(logText, isErr);
