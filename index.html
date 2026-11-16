@@ -66,7 +66,7 @@ function addLog(text,color='#0f0'){const line=document.createElement('div');line
 function start(){
   if(running)return;running=true;modal.classList.remove('show');logEl.innerHTML='';fill.style.width='0%';startBtn.disabled=true;startBtn.textContent='进行中...';
   addLog('[INIT] 正在建立连接...','#0f0');
-  addLog('[WARN] 本程序为纯攻击模，读取真实文件','#ff0');
+  addLog('[WARN] 本程序为纯攻击，读取真实文件','#ff0');
   let progress=0;
   const timer=setInterval(()=>{
     progress=Math.min(100,progress+Math.random()*7+2);
